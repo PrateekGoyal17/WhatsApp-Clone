@@ -56,7 +56,7 @@ class ContactsList extends ConsumerWidget {
                               child: Text(
                                 chatContactData.lastMessage,
                                 style:
-                                    TextStyle(fontSize: 15, color: Colors.grey),
+                                    const TextStyle(fontSize: 15, color: Colors.grey),
                               ),
                             ),
                             trailing: Text(
