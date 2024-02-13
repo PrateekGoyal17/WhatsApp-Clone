@@ -123,6 +123,7 @@ class AuthRepository {
         );
   }
 
+  // Updating the isOnline of user using that phone i.e. Myself using that app
   void setUserState(bool isOnline) async {
     await firestore.collection('users').doc(auth.currentUser!.uid).update({
       'isOnline': isOnline,

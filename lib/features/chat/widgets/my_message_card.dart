@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:whatsapp_clone/colors.dart';
+import 'package:whatsapp_clone/common/enums/message_enum.dart';
+import 'package:whatsapp_clone/features/chat/widgets/display_text_img_gif.dart';
 
 class MyMessageCard extends StatelessWidget {
   final String message;
   final String date;
-  const MyMessageCard({super.key, required this.date, required this.message});
+  final MessageEnum messageEnum;
+  const MyMessageCard(
+      {super.key,
+      required this.date,
+      required this.message,
+      required this.messageEnum});
 
   @override
   Widget build(BuildContext context) {
@@ -26,20 +33,25 @@ class MyMessageCard extends StatelessWidget {
           ),
           margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
           child: Padding(
-            padding: const EdgeInsets.only(top: 3,left: 3),
+            padding: const EdgeInsets.only(top: 3, left: 3),
             child: Stack(
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(
-                    left: 10,
-                    right: 30,
-                    top: 5,
-                    bottom: 20,
-                  ),
-                  child: Text(
-                    message,
-                    style: TextStyle(fontSize: 17),
-                  ),
+                  padding: messageEnum == MessageEnum.text
+                      ? const EdgeInsets.only(
+                          left: 10,
+                          right: 30,
+                          top: 5,
+                          bottom: 20,
+                        )
+                      : const EdgeInsets.only(
+                          left: 5,
+                          right: 5,
+                          top: 5,
+                          bottom: 25,
+                        ),
+                  child:
+                      DisplayTextImageGIF(message: message, type: messageEnum),
                 ),
                 Positioned(
                   right: 10,
@@ -48,8 +60,8 @@ class MyMessageCard extends StatelessWidget {
                     children: [
                       Text(
                         date,
-                        style:
-                            const TextStyle(color: Colors.white54, fontSize: 14),
+                        style: const TextStyle(
+                            color: Colors.white54, fontSize: 14),
                       ),
                       const SizedBox(
                         width: 5,
