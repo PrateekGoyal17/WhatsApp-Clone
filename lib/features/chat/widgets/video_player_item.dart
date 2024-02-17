@@ -18,7 +18,6 @@ class _VideoPlayerItemState extends State<VideoPlayerItem> {
     videoPlayerController = VideoPlayerController.asset(widget.videoUrl)
       ..initialize().then((value) {
         videoPlayerController.setVolume(1);
-        videoPlayerController.play();
         setState(() {});
       });
     super.initState();
