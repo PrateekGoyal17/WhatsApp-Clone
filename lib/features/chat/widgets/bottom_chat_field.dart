@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
+import 'package:enough_giphy_flutter/enough_giphy_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whatsapp_clone/colors.dart';
@@ -50,6 +51,14 @@ class _BottomChatFieldState extends ConsumerState<BottomChatField> {
     File? video = await pickVideoFromGallery(context);
     if (video != null) {
       sendFileMessage(video, MessageEnum.video);
+    }
+  }
+
+  void selectGIF() async{
+    GiphyGif? gif = await pickGIF(context);
+    if(gif!=null){
+      // ignore: use_build_context_synchronously
+      ref.read(chatControllerProvider).sendGIF(context, gif.url, widget.receiverUserId);
     }
   }
 
@@ -124,8 +133,21 @@ class _BottomChatFieldState extends ConsumerState<BottomChatField> {
                         ),
                       ),
                       Positioned(
-                        top: MediaQuery.of(context).size.width * 0.008,
-                        left: MediaQuery.of(context).size.width * 0.125,
+                        left: MediaQuery.of(context).size.width * 0.11,
+                        top: 3,
+                        bottom: 3,
+                        child: IconButton(
+                          onPressed: selectGIF,
+                          icon: Icon(
+                            Icons.gif,
+                            size: MediaQuery.of(context).size.width * 0.075,
+                          ),
+                          color: Colors.grey,
+                        ),
+                      ),
+                      Positioned(
+                        top: MediaQuery.of(context).size.width * 0.005,
+                        left: MediaQuery.of(context).size.width * 0.241,
                         width: MediaQuery.of(context).size.width * 0.42,
                         child: TextFormField(
                           focusNode: focusNode,

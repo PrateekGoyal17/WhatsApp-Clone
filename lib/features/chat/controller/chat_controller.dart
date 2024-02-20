@@ -55,4 +55,21 @@ class ChatController {
             ref: ref,
             messageEnum: messageEnum));
   }
+
+  void sendGIF(
+    BuildContext context,
+    String gifUrl,
+    String receiverUserId,
+  ) {
+    //https://i.giphy.com/media/
+    int gifUrlPartIndex = gifUrl.lastIndexOf("-")+1;
+    String gifUrlPart = gifUrl.substring(gifUrlPartIndex);
+    String newGifUrl = "https://i.giphy.com/media/$gifUrlPart/200.gif";
+    ref.read(userDataAuthProvider).whenData((senderUserData) =>
+        chatRepository.sendGIF(
+            context: context,
+            senderUserData: senderUserData!,
+            gifUrl: newGifUrl,
+            receiverUserId: receiverUserId));
+  }
 }
