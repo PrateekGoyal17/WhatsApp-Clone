@@ -6,6 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 import 'package:whatsapp_clone/common/enums/message_enum.dart';
+import 'package:whatsapp_clone/common/providers/message_reply_provider.dart';
 import 'package:whatsapp_clone/common/repositories/common_firebase_storage_repository.dart';
 import 'package:whatsapp_clone/common/utils/utils.dart';
 import 'package:whatsapp_clone/models/chat_contact.dart';
@@ -76,15 +77,25 @@ class ChatRepository {
     required String messageId,
     required DateTime timeSent,
     required MessageEnum messageType,
+    required MessageReply? messageReply,
+    // here in this I haven't added extra username and recieverUsername because it was already there (if needed 7:00:00)
   }) async {
     var message = Message(
-        text: text,
-        senderId: auth.currentUser!.uid,
-        receiverId: receiverUserId,
-        messageId: messageId,
-        timeSent: timeSent,
-        messageType: messageType,
-        isSeen: false);
+      text: text,
+      senderId: auth.currentUser!.uid,
+      receiverId: receiverUserId,
+      messageId: messageId,
+      timeSent: timeSent,
+      messageType: messageType,
+      isSeen: false,
+      repliedMessage: messageReply == null ? '' : messageReply.message,
+      repliedTo: messageReply == null
+          ? ''
+          : messageReply.isMe
+              ? senderUserName
+              : receiverUserName,
+      repliedMessageType: messageReply == null ? MessageEnum.text :messageReply.messageEnum,
+    );
     // users -> senderUserId -> chats -> recieverUserId -> message -> messageID -> setData
 
     await firestore
@@ -152,6 +163,7 @@ class ChatRepository {
     required UserModel senderUserData,
     required String text,
     required String receiverUserId,
+    required MessageReply? messageReply,
   }) async {
     try {
       var timeSent = DateTime.now();
@@ -167,14 +179,14 @@ class ChatRepository {
           receiverUserData, senderUserData, timeSent, text, receiverUserId);
 
       _saveMessageToMessageSubcollection(
-        receiverUserId: receiverUserId,
-        text: text,
-        senderUserName: senderUserData.name,
-        receiverUserName: receiverUserData.name,
-        timeSent: timeSent,
-        messageType: MessageEnum.text,
-        messageId: messageId,
-      );
+          receiverUserId: receiverUserId,
+          text: text,
+          senderUserName: senderUserData.name,
+          receiverUserName: receiverUserData.name,
+          timeSent: timeSent,
+          messageType: MessageEnum.text,
+          messageId: messageId,
+          messageReply: messageReply,);
     } catch (e) {
       // ignore: use_build_context_synchronously
       showSnackBar(context, e.toString());
@@ -188,6 +200,7 @@ class ChatRepository {
     required UserModel senderUserData,
     required ProviderRef ref,
     required MessageEnum messageEnum,
+    required MessageReply? messageReply,
   }) async {
     try {
       var timeSent = DateTime.now();
@@ -239,7 +252,8 @@ class ChatRepository {
           receiverUserName: recieverUserData.name,
           messageId: messageId,
           timeSent: timeSent,
-          messageType: messageEnum);
+          messageType: messageEnum,
+          messageReply: messageReply,);
     } catch (e) {
       showSnackBar(context, e.toString());
     }
@@ -250,6 +264,7 @@ class ChatRepository {
     required UserModel senderUserData,
     required String gifUrl,
     required String receiverUserId,
+    required MessageReply? messageReply,
   }) async {
     try {
       var timeSent = DateTime.now();
@@ -265,14 +280,14 @@ class ChatRepository {
           receiverUserData, senderUserData, timeSent, 'GIF', receiverUserId);
 
       _saveMessageToMessageSubcollection(
-        receiverUserId: receiverUserId,
-        text: gifUrl,
-        senderUserName: senderUserData.name,
-        receiverUserName: receiverUserData.name,
-        timeSent: timeSent,
-        messageType: MessageEnum.gif,
-        messageId: messageId,
-      );
+          receiverUserId: receiverUserId,
+          text: gifUrl,
+          senderUserName: senderUserData.name,
+          receiverUserName: receiverUserData.name,
+          timeSent: timeSent,
+          messageType: MessageEnum.gif,
+          messageId: messageId,
+          messageReply: messageReply,);
     } catch (e) {
       // ignore: use_build_context_synchronously
       showSnackBar(context, e.toString());
