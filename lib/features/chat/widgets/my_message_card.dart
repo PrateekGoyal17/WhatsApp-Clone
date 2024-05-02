@@ -70,19 +70,27 @@ class MyMessageCard extends StatelessWidget {
                             username,
                             style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
-                          const SizedBox(height: 3,),
+                          const SizedBox(
+                            height: 3,
+                          ),
                           Container(
                             padding: const EdgeInsets.all(10),
-                            decoration:BoxDecoration(
+                            decoration: BoxDecoration(
                               color: backgroundColor.withOpacity(0.5),
-                              borderRadius: const BorderRadius.all(Radius.circular(5,),),
+                              borderRadius: const BorderRadius.all(
+                                Radius.circular(
+                                  5,
+                                ),
+                              ),
                             ),
                             child: DisplayTextImageGIF(
                               message: repliedText,
                               type: repliedMessageType,
                             ),
                           ),
-                          const SizedBox(height: 8,)
+                          const SizedBox(
+                            height: 8,
+                          )
                         ],
                         DisplayTextImageGIF(
                             message: message, type: messageEnum),
