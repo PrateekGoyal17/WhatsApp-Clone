@@ -94,7 +94,8 @@ class ChatRepository {
           : messageReply.isMe
               ? senderUserName
               : receiverUserName,
-      repliedMessageType: messageReply == null ? MessageEnum.text :messageReply.messageEnum,
+      repliedMessageType:
+          messageReply == null ? MessageEnum.text : messageReply.messageEnum,
     );
     // users -> senderUserId -> chats -> recieverUserId -> message -> messageID -> setData
 
@@ -179,14 +180,15 @@ class ChatRepository {
           receiverUserData, senderUserData, timeSent, text, receiverUserId);
 
       _saveMessageToMessageSubcollection(
-          receiverUserId: receiverUserId,
-          text: text,
-          senderUserName: senderUserData.name,
-          receiverUserName: receiverUserData.name,
-          timeSent: timeSent,
-          messageType: MessageEnum.text,
-          messageId: messageId,
-          messageReply: messageReply,);
+        receiverUserId: receiverUserId,
+        text: text,
+        senderUserName: senderUserData.name,
+        receiverUserName: receiverUserData.name,
+        timeSent: timeSent,
+        messageType: MessageEnum.text,
+        messageId: messageId,
+        messageReply: messageReply,
+      );
     } catch (e) {
       // ignore: use_build_context_synchronously
       showSnackBar(context, e.toString());
@@ -246,14 +248,15 @@ class ChatRepository {
       );
 
       _saveMessageToMessageSubcollection(
-          receiverUserId: recieverUserId,
-          text: imageUrl,
-          senderUserName: senderUserData.name,
-          receiverUserName: recieverUserData.name,
-          messageId: messageId,
-          timeSent: timeSent,
-          messageType: messageEnum,
-          messageReply: messageReply,);
+        receiverUserId: recieverUserId,
+        text: imageUrl,
+        senderUserName: senderUserData.name,
+        receiverUserName: recieverUserData.name,
+        messageId: messageId,
+        timeSent: timeSent,
+        messageType: messageEnum,
+        messageReply: messageReply,
+      );
     } catch (e) {
       showSnackBar(context, e.toString());
     }
@@ -280,16 +283,45 @@ class ChatRepository {
           receiverUserData, senderUserData, timeSent, 'GIF', receiverUserId);
 
       _saveMessageToMessageSubcollection(
-          receiverUserId: receiverUserId,
-          text: gifUrl,
-          senderUserName: senderUserData.name,
-          receiverUserName: receiverUserData.name,
-          timeSent: timeSent,
-          messageType: MessageEnum.gif,
-          messageId: messageId,
-          messageReply: messageReply,);
+        receiverUserId: receiverUserId,
+        text: gifUrl,
+        senderUserName: senderUserData.name,
+        receiverUserName: receiverUserData.name,
+        timeSent: timeSent,
+        messageType: MessageEnum.gif,
+        messageId: messageId,
+        messageReply: messageReply,
+      );
     } catch (e) {
       // ignore: use_build_context_synchronously
+      showSnackBar(context, e.toString());
+    }
+  }
+
+  void setChatMessageSeen(
+    BuildContext context,
+    String receiverUserId,
+    String messageId,
+  ) async {
+    try {
+      await firestore
+          .collection('users')
+          .doc(auth.currentUser!.uid)
+          .collection('chats')
+          .doc(receiverUserId)
+          .collection('messages')
+          .doc(messageId)
+          .update({'isSeen': true});
+
+      await firestore
+          .collection('users')
+          .doc(receiverUserId)
+          .collection('chats')
+          .doc(auth.currentUser!.uid)
+          .collection('messages')
+          .doc(messageId)
+          .update({'isSeen': true});
+    } catch (e) {
       showSnackBar(context, e.toString());
     }
   }
