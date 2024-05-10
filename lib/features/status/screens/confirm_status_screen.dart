@@ -6,11 +6,14 @@ import 'package:whatsapp_clone/colors.dart';
 import 'package:whatsapp_clone/features/status/controller/status_controller.dart';
 
 class ConfirmStatusScreen extends ConsumerWidget {
-  static const String routeName = "/confirm-status-screen";
+  static const String routeName = '/confirm-status-screen';
   final File file;
-  const ConfirmStatusScreen({required this.file, super.key});
+  const ConfirmStatusScreen({
+    Key? key,
+    required this.file,
+  }) : super(key: key);
 
-   void addStatus(WidgetRef ref, BuildContext context) {
+  void addStatus(WidgetRef ref, BuildContext context) {
     ref.read(statusControllerProvider).addStatus(file, context);
     Navigator.pop(context);
   }
