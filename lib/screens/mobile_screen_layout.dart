@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whatsapp_clone/colors.dart';
 import 'package:whatsapp_clone/common/utils/utils.dart';
 import 'package:whatsapp_clone/features/auth/controller/auth_controller.dart';
+import 'package:whatsapp_clone/features/group/screens/create_group_screen.dart';
 import 'package:whatsapp_clone/features/select_contacts/screens/select_contact_screen.dart';
 import 'package:whatsapp_clone/features/chat/widgets/contacts_list.dart';
 import 'package:whatsapp_clone/features/status/screens/confirm_status_screen.dart';
@@ -66,7 +67,17 @@ class _MobileScreenLayoutState extends ConsumerState<MobileScreenLayout>
             IconButton(
                 onPressed: () {}, icon: const Icon(Icons.camera_alt_outlined)),
             IconButton(onPressed: () {}, icon: const Icon(Icons.search)),
-            IconButton(onPressed: () {}, icon: const Icon(Icons.more_vert)),
+            PopupMenuButton(
+                icon: Icon(Icons.more_vert),
+                itemBuilder: (context) => [
+                      PopupMenuItem(
+                        child: const Text(
+                          "Create Group",
+                        ),
+                        onTap: () =>
+                          Future(() => Navigator.pushNamed(context, CreateGroupScreen.routeName)),
+                      ),
+                    ]),
           ],
           bottom: TabBar(
             controller: tabBarController,
