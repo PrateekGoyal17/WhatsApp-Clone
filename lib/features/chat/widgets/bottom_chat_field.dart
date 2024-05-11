@@ -16,7 +16,8 @@ import 'package:whatsapp_clone/features/chat/widgets/message_reply_preview.dart'
 
 class BottomChatField extends ConsumerStatefulWidget {
   final String receiverUserId;
-  const BottomChatField({super.key, required this.receiverUserId});
+  final bool isGroupChat;
+  const BottomChatField({super.key, required this.receiverUserId, required this.isGroupChat});
 
   @override
   ConsumerState<BottomChatField> createState() => _BottomChatFieldState();
@@ -50,7 +51,7 @@ class _BottomChatFieldState extends ConsumerState<BottomChatField> {
     print(isRecorderInit);
     if (isShowSendButton) {
       ref.read(chatControllerProvider).sendTextMessage(
-          context, _messageController.text.trim(), widget.receiverUserId);
+          context, _messageController.text.trim(), widget.receiverUserId, widget.isGroupChat);
       setState(() {
         _messageController.text = "";
       });
@@ -76,7 +77,7 @@ class _BottomChatFieldState extends ConsumerState<BottomChatField> {
   ) {
     ref
         .read(chatControllerProvider)
-        .sendFileMessage(context, file, widget.receiverUserId, messageEnum);
+        .sendFileMessage(context, file, widget.receiverUserId, messageEnum, widget.isGroupChat);
   }
 
   void selectImage() async {
@@ -99,7 +100,7 @@ class _BottomChatFieldState extends ConsumerState<BottomChatField> {
       // ignore: use_build_context_synchronously
       ref
           .read(chatControllerProvider)
-          .sendGIF(context, gif.url, widget.receiverUserId);
+          .sendGIF(context, gif.url, widget.receiverUserId,widget.isGroupChat);
     }
   }
 

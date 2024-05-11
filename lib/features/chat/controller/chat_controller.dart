@@ -33,10 +33,15 @@ class ChatController {
     return chatRepository.getMessages(recieverUserId);
   }
 
+  Stream<List<Message>> groupChatStream(String groupId) {
+    return chatRepository.getGroupChatStream(groupId);
+  }
+
   void sendTextMessage(
     BuildContext context,
     String text,
     String receiverUserId,
+    bool isGroupChat,
   ) {
     final messageReply = ref.read(messageReplyProvider);
     ref.read(userDataAuthProvider).whenData(
@@ -45,8 +50,10 @@ class ChatController {
               senderUserData: senderUserData!,
               text: text,
               receiverUserId: receiverUserId,
-              messageReply: messageReply),
+              messageReply: messageReply,
+              isGroupChat: isGroupChat,),
         );
+    // ignore: deprecated_member_use
     ref.read(messageReplyProvider.state).update((state) => null);
   }
 
@@ -55,17 +62,20 @@ class ChatController {
     File file,
     String receiverUserId,
     MessageEnum messageEnum,
+    bool isGroupChat,
   ) {
     final messageReply = ref.read(messageReplyProvider);
     ref.read(userDataAuthProvider).whenData(
           (senderUserData) => chatRepository.sendFileMessage(
-              context: context,
-              senderUserData: senderUserData!,
-              file: file,
-              recieverUserId: receiverUserId,
-              ref: ref,
-              messageEnum: messageEnum,
-              messageReply: messageReply),
+            context: context,
+            senderUserData: senderUserData!,
+            file: file,
+            recieverUserId: receiverUserId,
+            ref: ref,
+            messageEnum: messageEnum,
+            messageReply: messageReply,
+            isGroupChat: isGroupChat,
+          ),
         );
     ref.read(messageReplyProvider.state).update((state) => null);
   }
@@ -74,6 +84,7 @@ class ChatController {
     BuildContext context,
     String gifUrl,
     String receiverUserId,
+    bool isGroupChat,
   ) {
     final messageReply = ref.read(messageReplyProvider);
     //https://i.giphy.com/media/
@@ -86,12 +97,14 @@ class ChatController {
               senderUserData: senderUserData!,
               gifUrl: newGifUrl,
               receiverUserId: receiverUserId,
-              messageReply: messageReply),
+              messageReply: messageReply,
+              isGroupChat: isGroupChat,),
         );
     ref.read(messageReplyProvider.state).update((state) => null);
   }
 
-  void setChatMessageSeen(BuildContext context, String receiverUserId, String messageId) {
+  void setChatMessageSeen(
+      BuildContext context, String receiverUserId, String messageId) {
     chatRepository.setChatMessageSeen(context, receiverUserId, messageId);
   }
 }

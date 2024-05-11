@@ -37,7 +37,8 @@ class ContactsList extends ConsumerWidget {
                                 Navigator.pushNamed(
                                   context, MobileChatScreen.routeName, arguments: {
                                     'name': groupData.name,
-                                    'uid':groupData.groupId
+                                    'uid':groupData.groupId,
+                                    'isGroupChat': true,
                                   }
                                 );
                               }, // On tap of a single contact
@@ -92,7 +93,8 @@ class ContactsList extends ConsumerWidget {
                                 Navigator.pushNamed(
                                   context, MobileChatScreen.routeName, arguments: {
                                     'name': chatContactData.name,
-                                    'uid':chatContactData.contactId
+                                    'uid':chatContactData.contactId,
+                                    'isGroupChat':false,
                                   }
                                 );
                               }, // On tap of a single contact
