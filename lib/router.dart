@@ -9,6 +9,8 @@ import 'package:whatsapp_clone/features/group/screens/create_group_screen.dart';
 import 'package:whatsapp_clone/features/select_contacts/screens/select_contact_screen.dart';
 import 'package:whatsapp_clone/features/chat/screens/mobile_chat_screen.dart';
 import 'package:whatsapp_clone/features/status/screens/confirm_status_screen.dart';
+import 'package:whatsapp_clone/features/status/screens/status_screen.dart';
+import 'package:whatsapp_clone/models/status_model.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {
@@ -31,8 +33,9 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       final String name = arguments['name'];
       final String uid = arguments['uid'];
       final bool isGroupChat = arguments['isGroupChat'];
+      final String profilePic = arguments['profilePic'];
       return MaterialPageRoute(
-          builder: (context) => MobileChatScreen(name: name,uid: uid, isGroupChat: isGroupChat,));
+          builder: (context) => MobileChatScreen(name: name,uid: uid, isGroupChat: isGroupChat,profilePic: profilePic,));
     case ConfirmStatusScreen.routeName:
       final file = settings.arguments as File;
       return MaterialPageRoute(
@@ -40,6 +43,13 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case CreateGroupScreen.routeName:
       return MaterialPageRoute(
         builder: (context) => const CreateGroupScreen(),
+      );
+      case StatusScreen.routeName:
+      final status = settings.arguments as Status;
+      return MaterialPageRoute(
+        builder: (context) => StatusScreen(
+          status: status,
+        ),
       );
     default:
       return MaterialPageRoute(

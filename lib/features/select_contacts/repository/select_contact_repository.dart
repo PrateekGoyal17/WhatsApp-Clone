@@ -40,7 +40,9 @@ class SelectContactRepository{
           // ignore: use_build_context_synchronously
           Navigator.pushNamed(context, MobileChatScreen.routeName, arguments: {
             "name": userData.name,
-            "uid": userData.uid
+            "uid": userData.uid,
+            "isGroupChat": false,
+            "profilePic": userData.profilePic,
           });
         }
       }
@@ -48,6 +50,7 @@ class SelectContactRepository{
         showSnackBar(context, "This number does not exist on this App");
       }
     } catch(e){
+      print("still ero...............");
       showSnackBar(context, e.toString());
     }
   }

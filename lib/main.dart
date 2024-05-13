@@ -10,6 +10,8 @@ import 'package:whatsapp_clone/firebase_options.dart';
 import 'package:whatsapp_clone/router.dart';
 import 'package:whatsapp_clone/screens/mobile_screen_layout.dart';
 
+final globalScaffoldkey = GlobalKey<ScaffoldState>();
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -24,6 +26,7 @@ class MyApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp(
+      key: globalScaffoldkey,
       title: 'WhatsApp Clone',
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark().copyWith(

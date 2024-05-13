@@ -19,7 +19,7 @@ class ConfirmStatusScreen extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context, WidgetRef ref)  {
     return Scaffold(
       body: Center(
         child: AspectRatio(

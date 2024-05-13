@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whatsapp_clone/colors.dart';
 import 'package:whatsapp_clone/common/widgets/loader.dart';
 import 'package:whatsapp_clone/features/auth/controller/auth_controller.dart';
+import 'package:whatsapp_clone/features/call/controller/call_controller.dart';
 import 'package:whatsapp_clone/features/chat/widgets/bottom_chat_field.dart';
 import 'package:whatsapp_clone/models/user_model.dart';
 import 'package:whatsapp_clone/features/chat/widgets/chat_list.dart';
@@ -12,7 +13,18 @@ class MobileChatScreen extends ConsumerWidget {
   final String name;
   final String uid;
   final bool isGroupChat;
-  const MobileChatScreen( {super.key, required this.name, required this.uid, required this.isGroupChat,});
+  final String profilePic;
+  const MobileChatScreen({super.key, required this.name, required this.uid, required this.isGroupChat, required this.profilePic,  });
+
+  void makeCall(WidgetRef ref, BuildContext context) {
+    ref.read(callControllerProvider).makeCall(
+          context,
+          name,
+          uid,
+          profilePic,
+          isGroupChat,
+        );
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -38,7 +50,7 @@ class MobileChatScreen extends ConsumerWidget {
               );
             }),
         actions: [
-          IconButton(onPressed: () {}, icon: Icon(Icons.video_call)),
+          IconButton(onPressed: () =>makeCall(ref, context), icon: Icon(Icons.video_call)),
           IconButton(onPressed: () {}, icon: Icon(Icons.call)),
           IconButton(onPressed: () {}, icon: Icon(Icons.more_vert)),
         ],
@@ -61,31 +73,3 @@ class MobileChatScreen extends ConsumerWidget {
     );
   }
 }
-
-
-
-// TextField(
-//             decoration: InputDecoration(
-//               hintText: "Message",
-//               filled: true,
-//               fillColor: mobileChatBoxColor,
-//               prefixIcon: Padding(
-//                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
-//                   child: IconButton(
-//                       onPressed: () {}, icon: Icon(Icons.emoji_emotions))),
-//               suffixIcon: Padding(
-//                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
-//                 child: Row(
-//                   mainAxisAlignment: MainAxisAlignment.end,
-//                   children: [
-//                     IconButton(
-//                         onPressed: () {}, icon: Icon(Icons.emoji_emotions)),
-//                     IconButton(
-//                         onPressed: () {}, icon: Icon(Icons.emoji_emotions)),
-//                     IconButton(
-//                         onPressed: () {}, icon: Icon(Icons.emoji_emotions)),
-//                   ],
-//                 ),
-//               ),
-//             ),
-//           )

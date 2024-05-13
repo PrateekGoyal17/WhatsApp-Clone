@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:story_view/story_view.dart';
 import 'package:whatsapp_clone/common/widgets/loader.dart';
@@ -37,6 +36,7 @@ class _StatusScreenState extends State<StatusScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print(storyItems);
     return Scaffold(
       body: storyItems.isEmpty
           ? const Loader()
