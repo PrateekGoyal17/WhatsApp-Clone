@@ -306,7 +306,6 @@ class ChatRepository {
         recieverUserId,
         isGroupChat,
       );
-
       _saveMessageToMessageSubcollection(
           receiverUserId: recieverUserId,
           text: imageUrl,
@@ -395,4 +394,17 @@ class ChatRepository {
       showSnackBar(context, e.toString());
     }
   }
+
+  // Future<String> getPhoneNo(BuildContext context, String receiverUserId) async {
+  //   try {
+  //     var userDataMap =
+  //         await firestore.collection('users').doc(receiverUserId).get();
+
+  //     String phoneNo = UserModel.fromMap(userDataMap.data()!).phoneNumber;
+  //     return phoneNo;
+  //   } catch (e) {
+  //     showSnackBar(context, e.toString());
+  //   }
+  //   return "Some error occured in fetching phone Number";
+  // }
 }

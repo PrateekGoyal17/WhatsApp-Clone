@@ -4,6 +4,7 @@ import 'package:whatsapp_clone/colors.dart';
 import 'package:whatsapp_clone/common/widgets/loader.dart';
 import 'package:whatsapp_clone/features/auth/controller/auth_controller.dart';
 import 'package:whatsapp_clone/features/call/controller/call_controller.dart';
+import 'package:whatsapp_clone/features/chat/screens/user_profile_screen.dart';
 import 'package:whatsapp_clone/features/chat/widgets/bottom_chat_field.dart';
 import 'package:whatsapp_clone/models/user_model.dart';
 import 'package:whatsapp_clone/features/chat/widgets/chat_list.dart';
@@ -34,6 +35,7 @@ class MobileChatScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // String phoneNo = ref.read(chatControllerProvider).getPhoneNo(context, uid) as String;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: appBarColor,
@@ -48,7 +50,15 @@ class MobileChatScreen extends ConsumerWidget {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(name),
+                      InkWell(
+                        onTap: () => Navigator.pushNamed(
+                            context, UserProfileScreen.routeName,
+                            arguments: {
+                              'name': name,
+                              'profilePic': profilePic,
+                            }),
+                        child: Text(name),
+                      ),
                       Text(
                         snapshot.data!.isOnline ? 'online' : 'offline',
                         style: TextStyle(

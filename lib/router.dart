@@ -5,6 +5,7 @@ import 'package:whatsapp_clone/common/widgets/error_screen.dart';
 import 'package:whatsapp_clone/features/auth/screens/login_screen.dart';
 import 'package:whatsapp_clone/features/auth/screens/otp_screen.dart';
 import 'package:whatsapp_clone/features/auth/screens/user_information_screen.dart';
+import 'package:whatsapp_clone/features/chat/screens/user_profile_screen.dart';
 import 'package:whatsapp_clone/features/group/screens/create_group_screen.dart';
 import 'package:whatsapp_clone/features/select_contacts/screens/select_contact_screen.dart';
 import 'package:whatsapp_clone/features/chat/screens/mobile_chat_screen.dart';
@@ -51,6 +52,13 @@ Route<dynamic> generateRoute(RouteSettings settings) {
           status: status,
         ),
       );
+      case UserProfileScreen.routeName:
+      final arguments = settings.arguments as Map<String, dynamic>;
+      final String name = arguments['name'];
+      final String profilePic = arguments['profilePic'];
+      // final String phoneNo = arguments['phoneNo'];
+      return MaterialPageRoute(
+          builder: (context) => UserProfileScreen(name: name, profilePic: profilePic,));
     default:
       return MaterialPageRoute(
           builder: (context) => const Scaffold(

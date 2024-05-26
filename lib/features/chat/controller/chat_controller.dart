@@ -107,4 +107,9 @@ class ChatController {
       BuildContext context, String receiverUserId, String messageId) {
     chatRepository.setChatMessageSeen(context, receiverUserId, messageId);
   }
+
+  // Future<String> getPhoneNo(BuildContext context, String receiverUserId) async {
+  //   var phoneNo = await chatRepository.getPhoneNo(context, receiverUserId);
+  //   return phoneNo ;
+  // }
 }

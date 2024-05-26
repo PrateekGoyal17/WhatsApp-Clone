@@ -97,6 +97,7 @@ class ContactsList extends ConsumerWidget {
                                     'uid':chatContactData.contactId,
                                     'isGroupChat':false,
                                     'profilePic':chatContactData.profilePic,
+                                    
                                   }
                                 );
                               }, // On tap of a single contact
