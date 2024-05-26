@@ -38,63 +38,73 @@ class _ChatListState extends ConsumerState<ChatList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: StreamBuilder<List<Message>>(
-          stream: widget.isGroupChat
-              ? ref
-                  .read(chatControllerProvider)
-                  .groupChatStream(widget.recieverUserId)
-              : ref
-                  .read(chatControllerProvider)
-                  .getMessages(widget.recieverUserId),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Loader();
-            }
-            SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-              messageController
-                  .jumpTo(messageController.position.maxScrollExtent);
-            });
-            return ListView.builder(
-              controller: messageController,
-              itemCount: snapshot.data!.length,
-              itemBuilder: ((context, index) {
-                final messageData = snapshot.data![index];
-                var timeSent = DateFormat.Hm().format(messageData.timeSent);
-
-                if (!messageData.isSeen &&
-                    messageData.receiverId ==
-                        FirebaseAuth.instance.currentUser!.uid) {
-                  ref.read(chatControllerProvider).setChatMessageSeen(
-                      context, widget.recieverUserId, messageData.messageId);
-                } // This if is used for the seen feature.
-
-                if (messageData.senderId ==
-                    FirebaseAuth.instance.currentUser!.uid) {
-                  return MyMessageCard(
-                    message: messageData.text,
-                    date: timeSent,
-                    messageEnum: messageData.messageType,
-                    repliedText: messageData.repliedMessage,
-                    username: messageData.repliedTo,
-                    repliedMessageType: messageData.messageType,
-                    onLeftSwipe: (d) => onMessageSwipe(
-                        messageData.text, true, messageData.messageType),
-                    isSeen: messageData.isSeen,
-                  );
+      body: Stack(
+        children: [
+          Image.asset(
+            "assets/bg3.jpg",
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            fit: BoxFit.cover,
+          ),
+          StreamBuilder<List<Message>>(
+              stream: widget.isGroupChat
+                  ? ref
+                      .read(chatControllerProvider)
+                      .groupChatStream(widget.recieverUserId)
+                  : ref
+                      .read(chatControllerProvider)
+                      .getMessages(widget.recieverUserId),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Loader();
                 }
-                return SenderMessageCard(
-                  message: messageData.text,
-                  date: timeSent,
-                  messageEnum: messageData.messageType,
-                  username: messageData.repliedTo,
-                  repliedMessageType: messageData.messageType,
-                  onRightSwipe: (d) => onMessageSwipe(
-                      messageData.text, false, messageData.messageType),
-                  repliedText: messageData.repliedMessage,
+                SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+                  messageController
+                      .jumpTo(messageController.position.maxScrollExtent);
+                });
+                return ListView.builder(
+                  controller: messageController,
+                  itemCount: snapshot.data!.length,
+                  itemBuilder: ((context, index) {
+                    final messageData = snapshot.data![index];
+                    var timeSent = DateFormat.Hm().format(messageData.timeSent);
+
+                    if (!messageData.isSeen &&
+                        messageData.receiverId ==
+                            FirebaseAuth.instance.currentUser!.uid) {
+                      ref.read(chatControllerProvider).setChatMessageSeen(
+                          context, widget.recieverUserId, messageData.messageId);
+                    } // This if is used for the seen feature.
+
+                    if (messageData.senderId ==
+                        FirebaseAuth.instance.currentUser!.uid) {
+                      return MyMessageCard(
+                        message: messageData.text,
+                        date: timeSent,
+                        messageEnum: messageData.messageType,
+                        repliedText: messageData.repliedMessage,
+                        username: messageData.repliedTo,
+                        repliedMessageType: messageData.messageType,
+                        onLeftSwipe: (d) => onMessageSwipe(
+                            messageData.text, true, messageData.messageType),
+                        isSeen: messageData.isSeen,
+                      );
+                    }
+                    return SenderMessageCard(
+                      message: messageData.text,
+                      date: timeSent,
+                      messageEnum: messageData.messageType,
+                      username: messageData.repliedTo,
+                      repliedMessageType: messageData.messageType,
+                      onRightSwipe: (d) => onMessageSwipe(
+                          messageData.text, false, messageData.messageType),
+                      repliedText: messageData.repliedMessage,
+                    );
+                  }),
                 );
               }),
-            );
-          }),
+        ],
+      ),
     );
   }
 }

@@ -1,5 +1,5 @@
+import 'package:cached_video_player_plus/cached_video_player_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:video_player/video_player.dart';
 
 class VideoPlayerItem extends StatefulWidget {
   final String videoUrl;
@@ -10,12 +10,14 @@ class VideoPlayerItem extends StatefulWidget {
 }
 
 class _VideoPlayerItemState extends State<VideoPlayerItem> {
-  late VideoPlayerController videoPlayerController;
+  late CachedVideoPlayerPlusController videoPlayerController;
   bool isPlay = false;
 
   @override
   void initState() {
-    videoPlayerController = VideoPlayerController.asset(widget.videoUrl)
+    print("*****************");
+    print(widget.videoUrl);
+    videoPlayerController = CachedVideoPlayerPlusController.network("https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4")
       ..initialize().then((value) {
         videoPlayerController.setVolume(1);
         setState(() {});
@@ -34,7 +36,7 @@ class _VideoPlayerItemState extends State<VideoPlayerItem> {
     return AspectRatio(
       aspectRatio: 16 / 9,
       child: Stack(children: [
-        VideoPlayer(videoPlayerController),
+        CachedVideoPlayerPlus(videoPlayerController),
         Align(
           alignment: Alignment.center,
           child: IconButton(

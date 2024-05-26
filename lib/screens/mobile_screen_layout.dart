@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whatsapp_clone/colors.dart';
@@ -24,7 +23,7 @@ class _MobileScreenLayoutState extends ConsumerState<MobileScreenLayout>
   @override
   void initState() {
     super.initState();
-    tabBarController = TabController(length: 3, vsync: this);
+    tabBarController = TabController(length: 2, vsync: this);
     WidgetsBinding.instance.addObserver(this);
   }
 
@@ -51,10 +50,15 @@ class _MobileScreenLayoutState extends ConsumerState<MobileScreenLayout>
     }
   }
 
+  void logout(){
+    ref.read(authControllerProvider).logout(context);
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3,
+      length: 2,
       child: Scaffold(
         appBar: AppBar(
           elevation: 0,
@@ -65,8 +69,12 @@ class _MobileScreenLayoutState extends ConsumerState<MobileScreenLayout>
           ),
           actions: [
             IconButton(
-                onPressed: () {}, icon: const Icon(Icons.camera_alt_outlined)),
-            IconButton(onPressed: () {}, icon: const Icon(Icons.search)),
+                onPressed: () {
+                  pickImageFromGallery(context);
+                }, icon: const Icon(Icons.camera_alt_outlined)),
+            IconButton(onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>SelectContactScreen()));
+            }, icon: const Icon(Icons.search)),
             PopupMenuButton(
                 icon: Icon(Icons.more_vert),
                 itemBuilder: (context) => [
@@ -76,6 +84,13 @@ class _MobileScreenLayoutState extends ConsumerState<MobileScreenLayout>
                         ),
                         onTap: () =>
                           Future(() => Navigator.pushNamed(context, CreateGroupScreen.routeName)),
+                      ),
+                      PopupMenuItem(
+                        onTap: logout,
+                        child: const Text(
+                          "Logout",
+                        ),
+
                       ),
                     ]),
           ],
@@ -91,7 +106,7 @@ class _MobileScreenLayoutState extends ConsumerState<MobileScreenLayout>
             tabs: const [
               Text("Chats"),
               Text("Updates"),
-              Text("Calls"),
+              // Text("Calls"),
             ],
           ),
         ),
@@ -100,7 +115,7 @@ class _MobileScreenLayoutState extends ConsumerState<MobileScreenLayout>
           children: const [
             ContactsList(),
             StatusContactsScreen(),
-            Text("calls")
+            // Text("calls")
           ],
         ),
         floatingActionButton: FloatingActionButton(

@@ -23,6 +23,10 @@ class AuthController {
     required this.ref,
   });
 
+  void logout(BuildContext context){
+    authRepository.logout(context);
+  }
+
   Future<UserModel?> getUserData() async {
     UserModel? user = await authRepository.getCurrentUserData();
     return user;

@@ -9,6 +9,7 @@ import 'package:whatsapp_clone/common/utils/utils.dart';
 import 'package:whatsapp_clone/constants.dart';
 import 'package:whatsapp_clone/features/auth/screens/otp_screen.dart';
 import 'package:whatsapp_clone/features/auth/screens/user_information_screen.dart';
+import 'package:whatsapp_clone/features/landing/screens/landing_screen.dart';
 import 'package:whatsapp_clone/models/user_model.dart';
 import 'package:whatsapp_clone/screens/mobile_screen_layout.dart';
 
@@ -24,6 +25,11 @@ class AuthRepository {
   final FirebaseFirestore firestore;
 
   AuthRepository({required this.auth, required this.firestore});
+
+  void logout(BuildContext context){
+    auth.signOut();
+    Navigator.push(context, MaterialPageRoute(builder: (context)=> const LandingScreen()));
+  }
 
   Future<UserModel?> getCurrentUserData() async {
     var userData =
