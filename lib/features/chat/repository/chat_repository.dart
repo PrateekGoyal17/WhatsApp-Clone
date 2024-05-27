@@ -294,6 +294,9 @@ class ChatRepository {
         case MessageEnum.gif:
           contactMsg = 'GIF';
           break;
+        case MessageEnum.file:
+          contactMsg = '📁 File';
+          break;
         default:
           contactMsg = 'GIF';
       }

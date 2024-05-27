@@ -16,8 +16,8 @@ class _VideoPlayerItemState extends State<VideoPlayerItem> {
   @override
   void initState() {
     print("*****************");
-    print(widget.videoUrl);
-    videoPlayerController = CachedVideoPlayerPlusController.network("https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4")
+    print("The url is ${widget.videoUrl}");
+    videoPlayerController = CachedVideoPlayerPlusController.network(widget.videoUrl)
       ..initialize().then((value) {
         videoPlayerController.setVolume(1);
         setState(() {});

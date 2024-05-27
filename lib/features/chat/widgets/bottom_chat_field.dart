@@ -17,7 +17,8 @@ import 'package:whatsapp_clone/features/chat/widgets/message_reply_preview.dart'
 class BottomChatField extends ConsumerStatefulWidget {
   final String receiverUserId;
   final bool isGroupChat;
-  const BottomChatField({super.key, required this.receiverUserId, required this.isGroupChat});
+  const BottomChatField(
+      {super.key, required this.receiverUserId, required this.isGroupChat});
 
   @override
   ConsumerState<BottomChatField> createState() => _BottomChatFieldState();
@@ -51,14 +52,17 @@ class _BottomChatFieldState extends ConsumerState<BottomChatField> {
     print(isRecorderInit);
     if (isShowSendButton) {
       ref.read(chatControllerProvider).sendTextMessage(
-          context, _messageController.text.trim(), widget.receiverUserId, widget.isGroupChat);
+          context,
+          _messageController.text.trim(),
+          widget.receiverUserId,
+          widget.isGroupChat);
       setState(() {
         _messageController.text = "";
       });
     } else {
       var tempDir = await getTemporaryDirectory();
       var path = "${tempDir.path}/flutter_sound.aac";
-      if(!isRecorderInit) return; 
+      if (!isRecorderInit) return;
       if (isRecording) {
         await _soundRecorder!.stopRecorder();
         sendFileMessage(File(path), MessageEnum.audio);
@@ -75,9 +79,8 @@ class _BottomChatFieldState extends ConsumerState<BottomChatField> {
     File file,
     MessageEnum messageEnum,
   ) {
-    ref
-        .read(chatControllerProvider)
-        .sendFileMessage(context, file, widget.receiverUserId, messageEnum, widget.isGroupChat);
+    ref.read(chatControllerProvider).sendFileMessage(
+        context, file, widget.receiverUserId, messageEnum, widget.isGroupChat);
   }
 
   void selectImage() async {
@@ -94,13 +97,20 @@ class _BottomChatFieldState extends ConsumerState<BottomChatField> {
     }
   }
 
-  void selectGIF() async { 
+  void selectGIF() async {
     GiphyGif? gif = await pickGIF(context);
     if (gif != null) {
       // ignore: use_build_context_synchronously
       ref
           .read(chatControllerProvider)
-          .sendGIF(context, gif.url, widget.receiverUserId,widget.isGroupChat);
+          .sendGIF(context, gif.url, widget.receiverUserId, widget.isGroupChat);
+    }
+  }
+
+  void selectFile() async {
+    File? file = await pickFileFromGallery(context);
+    if (file != null) {
+      sendFileMessage(file, MessageEnum.file);
     }
   }
 
@@ -234,14 +244,39 @@ class _BottomChatFieldState extends ConsumerState<BottomChatField> {
                         right: MediaQuery.of(context).size.width * 0.14,
                         top: 3,
                         bottom: 3,
-                        child: IconButton(
-                          onPressed: selectVideo,
-                          icon: Icon(
-                            Icons.attach_file,
-                            size: MediaQuery.of(context).size.width * 0.075,
-                          ),
-                          color: Colors.grey,
-                        ),
+                        child: PopupMenuButton(
+                            icon: Icon(
+                              Icons.attach_file,
+                              size: MediaQuery.of(context).size.width * 0.075,
+                              color: Colors.grey,
+                            ),
+                            itemBuilder: (context) => [
+                                  PopupMenuItem(
+                                      onTap: selectFile,
+                                      child: const Text(
+                                        "Share File",
+                                      )),
+                                  PopupMenuItem(
+                                    onTap: selectVideo,
+                                    child: const Text(
+                                      "Share Video",
+                                    ),
+                                  ),
+                                  PopupMenuItem(
+                                    onTap: selectGIF,
+                                    child: const Text(
+                                      "Share GIF",
+                                    ),
+                                  ),
+                                ]),
+                        // child: IconButton(
+                        //   onPressed: selectFile,
+                        //   icon: Icon(
+                        //     Icons.attach_file,
+                        //     size: MediaQuery.of(context).size.width * 0.075,
+                        //   ),
+                        //   color: Colors.grey,
+                        // ),
                       ),
                       Positioned(
                         right: MediaQuery.of(context).size.width * 0.02,
@@ -265,7 +300,11 @@ class _BottomChatFieldState extends ConsumerState<BottomChatField> {
                   maxRadius: MediaQuery.of(context).size.width * 0.065,
                   child: GestureDetector(
                     child: Icon(
-                      isShowSendButton ? Icons.send :isRecording?Icons.close: Icons.mic,
+                      isShowSendButton
+                          ? Icons.send
+                          : isRecording
+                              ? Icons.close
+                              : Icons.mic,
                       color: Colors.white,
                     ),
                     onTap: sendTextMessage,
