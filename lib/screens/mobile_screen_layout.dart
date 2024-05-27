@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whatsapp_clone/colors.dart';
 import 'package:whatsapp_clone/common/utils/utils.dart';
 import 'package:whatsapp_clone/features/auth/controller/auth_controller.dart';
+import 'package:whatsapp_clone/features/auth/screens/user_information_screen.dart';
 import 'package:whatsapp_clone/features/group/screens/create_group_screen.dart';
 import 'package:whatsapp_clone/features/select_contacts/screens/select_contact_screen.dart';
 import 'package:whatsapp_clone/features/chat/widgets/contacts_list.dart';
@@ -50,10 +51,9 @@ class _MobileScreenLayoutState extends ConsumerState<MobileScreenLayout>
     }
   }
 
-  void logout(){
+  void logout() {
     ref.read(authControllerProvider).logout(context);
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -71,10 +71,16 @@ class _MobileScreenLayoutState extends ConsumerState<MobileScreenLayout>
             IconButton(
                 onPressed: () {
                   pickImageFromGallery(context);
-                }, icon: const Icon(Icons.camera_alt_outlined)),
-            IconButton(onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>SelectContactScreen()));
-            }, icon: const Icon(Icons.search)),
+                },
+                icon: const Icon(Icons.camera_alt_outlined)),
+            IconButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => SelectContactScreen()));
+                },
+                icon: const Icon(Icons.search)),
             PopupMenuButton(
                 icon: Icon(Icons.more_vert),
                 itemBuilder: (context) => [
@@ -82,15 +88,23 @@ class _MobileScreenLayoutState extends ConsumerState<MobileScreenLayout>
                         child: const Text(
                           "Create Group",
                         ),
-                        onTap: () =>
-                          Future(() => Navigator.pushNamed(context, CreateGroupScreen.routeName)),
+                        onTap: () => Future(() => Navigator.pushNamed(
+                            context, CreateGroupScreen.routeName)),
                       ),
                       PopupMenuItem(
                         onTap: logout,
                         child: const Text(
                           "Logout",
                         ),
-
+                      ),
+                      PopupMenuItem(
+                        onTap: () {
+                          Navigator.pushNamed(
+                              context, UserInformationScreen.routeName);
+                        },
+                        child: const Text(
+                          "Edit Profile",
+                        ),
                       ),
                     ]),
           ],

@@ -35,6 +35,7 @@ class MyMessageCard extends StatelessWidget {
         child: ConstrainedBox(
           constraints: BoxConstraints(
             maxWidth: MediaQuery.of(context).size.width - 45,
+            minWidth: MediaQuery.of(context).size.width *0.3,
           ),
           child: Card(
             color: messageColor,
@@ -112,10 +113,10 @@ class MyMessageCard extends StatelessWidget {
                         const SizedBox(
                           width: 5,
                         ),
-                         Icon(
+                        Icon(
                           isSeen ? Icons.done_all : Icons.done,
                           size: 18,
-                          color: isSeen? Colors.blue: Colors.white60,
+                          color: isSeen ? Colors.blue : Colors.white60,
                         )
                       ],
                     ),
